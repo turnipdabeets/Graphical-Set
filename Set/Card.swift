@@ -10,14 +10,29 @@ import Foundation
 
 /// hashable Card
 
-struct Card: Hashable
+struct Card: Hashable, CustomStringConvertible
 {
+    var description : String { return "\(number) \(shading) & \(color) \(symbol) card" }
+    
     var number: Number
     var symbol: Symbol
     var shading: Shading
     var color: Color
     
-    enum Number : Int {
+    enum Number : Int, CustomStringConvertible {
+        var description: String {
+            var title = ""
+            switch self {
+            case .one:
+                title = "one"
+            case .two:
+                title = "two"
+            case .three:
+                title = "three"
+            }
+            return title
+        }
+        
         case one = 1
         case two = 2
         case three = 3
@@ -27,7 +42,20 @@ struct Card: Hashable
         }
     }
     
-    enum Symbol: Int {
+    enum Symbol: Int, CustomStringConvertible {
+        var description: String {
+            var title = ""
+            switch self {
+            case .diamond:
+                title = "diamond"
+            case .oval:
+                title = "oval"
+            case .squiggle:
+                title = "squiggle"
+            }
+            return title
+        }
+        
         case diamond
         case oval
         case squiggle
@@ -37,7 +65,20 @@ struct Card: Hashable
         }
     }
     
-    enum Shading: Int {
+    enum Shading: Int, CustomStringConvertible {
+        var description: String {
+            var title = ""
+            switch self {
+            case .solid:
+                title = "solid"
+            case .striped:
+                title = "stripped"
+            case .open:
+                title = "open"
+            }
+            return title
+        }
+        
         case solid
         case striped
         case open
@@ -47,7 +88,20 @@ struct Card: Hashable
         }
     }
     
-    enum Color: Int {
+    enum Color: Int, CustomStringConvertible {
+        var description: String {
+            var title = ""
+            switch self {
+            case .teal:
+                title = "teal"
+            case .pink:
+                title = "pink"
+            case .purple:
+                title = "purple"
+            }
+            return title
+        }
+        
         case teal
         case pink
         case purple
