@@ -15,39 +15,15 @@ struct SetGame
     
     init(){
         makeDeck()
-//        cards.append(Card(number: 1, symbol: 1, shading: 1, color: 1))
-//        cards.append(Card(number: 1, symbol: 1, shading: 1, color: 1))
-//        cards.append(Card(number: 1, symbol: 1, shading: 1, color: 1))
-//        cards.append(Card(number: 0, symbol: 1, shading: 1, color: 1))
-//        cards.append(Card(number: 0, symbol: 1, shading: 1, color: 1))
-//        cards.append(Card(number: 0, symbol: 1, shading: 1, color: 1))
-//        cards.append(Card(number: 2, symbol: 1, shading: 1, color: 1))
-//        cards.append(Card(number: 2, symbol: 1, shading: 1, color: 1))
-//        cards.append(Card(number: 2, symbol: 1, shading: 1, color: 1))
-//        cards.append(Card(number: 0, symbol: 1, shading: 1, color: 0))
-//        cards.append(Card(number: 0, symbol: 1, shading: 1, color: 0))
-//        cards.append(Card(number: 0, symbol: 1, shading: 1, color: 0))
-//        cards.append(Card(number: 1, symbol: 1, shading: 1, color: 1))
-//        cards.append(Card(number: 1, symbol: 1, shading: 1, color: 1))
-//        cards.append(Card(number: 1, symbol: 1, shading: 1, color: 1))
-//        cards.append(Card(number: 0, symbol: 1, shading: 1, color: 1))
-//        cards.append(Card(number: 0, symbol: 1, shading: 1, color: 1))
-//        cards.append(Card(number: 0, symbol: 1, shading: 1, color: 1))
-//        cards.append(Card(number: 2, symbol: 1, shading: 1, color: 1))
-//        cards.append(Card(number: 2, symbol: 1, shading: 1, color: 1))
-//        cards.append(Card(number: 2, symbol: 1, shading: 1, color: 1))
-//        cards.append(Card(number: 0, symbol: 1, shading: 1, color: 0))
-//        cards.append(Card(number: 0, symbol: 1, shading: 1, color: 0))
-//        cards.append(Card(number: 0, symbol: 1, shading: 1, color: 0))
+//        cards.append(Card(number: Card.Number.one, symbol: Card.Symbol.diamond, shading: Card.Shading.open, color:Card.Color.purple))
         
     }
     
     mutating private func makeDeck(){
-        let cardOptionRange = 0..<3
-        for number in cardOptionRange {
-            for symbol in cardOptionRange {
-                for shading in cardOptionRange {
-                    for color in cardOptionRange {
+        for number in Card.Number.all {
+            for symbol in Card.Symbol.all {
+                for shading in Card.Shading.all {
+                    for color in Card.Color.all {
                         let card = Card(number: number, symbol: symbol, shading: shading, color: color)
                         cards.append(card)
                     }
@@ -98,14 +74,14 @@ struct SetGame
         let cardTwo = selectedCards[1]
         let cardThree = selectedCards[2]
         // get set cases
-        let allTheSameNumber = allTheSame(itemOne: cardOne.number, itemTwo: cardTwo.number, itemThree: cardThree.number)
-        let allDifferentNumber = allDifferent(itemOne: cardOne.number, itemTwo: cardTwo.number, itemThree: cardThree.number)
-        let allTheSameColor = allTheSame(itemOne: cardOne.color, itemTwo: cardTwo.color, itemThree: cardThree.color)
-        let allDifferentColor = allDifferent(itemOne: cardOne.color, itemTwo: cardTwo.color, itemThree: cardThree.color)
-        let allTheSameSymbol = allTheSame(itemOne: cardOne.symbol, itemTwo: cardTwo.symbol, itemThree: cardThree.symbol)
-        let allDifferentSymbol = allDifferent(itemOne: cardOne.symbol, itemTwo: cardTwo.symbol, itemThree: cardThree.symbol)
-        let allTheSameShading = allTheSame(itemOne: cardOne.shading, itemTwo: cardTwo.shading, itemThree: cardThree.shading)
-        let allDifferentShading = allDifferent(itemOne: cardOne.shading, itemTwo: cardTwo.shading, itemThree: cardThree.shading)
+        let allTheSameNumber = allTheSame(itemOne: cardOne.number.rawValue, itemTwo: cardTwo.number.rawValue, itemThree: cardThree.number.rawValue)
+        let allDifferentNumber = allDifferent(itemOne: cardOne.number.rawValue, itemTwo: cardTwo.number.rawValue, itemThree: cardThree.number.rawValue)
+        let allTheSameColor = allTheSame(itemOne: cardOne.color.rawValue, itemTwo: cardTwo.color.rawValue, itemThree: cardThree.color.rawValue)
+        let allDifferentColor = allDifferent(itemOne: cardOne.color.rawValue, itemTwo: cardTwo.color.rawValue, itemThree: cardThree.color.rawValue)
+        let allTheSameSymbol = allTheSame(itemOne: cardOne.symbol.rawValue, itemTwo: cardTwo.symbol.rawValue, itemThree: cardThree.symbol.rawValue)
+        let allDifferentSymbol = allDifferent(itemOne: cardOne.symbol.rawValue, itemTwo: cardTwo.symbol.rawValue, itemThree: cardThree.symbol.rawValue)
+        let allTheSameShading = allTheSame(itemOne: cardOne.shading.rawValue, itemTwo: cardTwo.shading.rawValue, itemThree: cardThree.shading.rawValue)
+        let allDifferentShading = allDifferent(itemOne: cardOne.shading.rawValue, itemTwo: cardTwo.shading.rawValue, itemThree: cardThree.shading.rawValue)
         // check set cases
         if allTheSameNumber || allDifferentNumber {
             if allTheSameColor || allDifferentColor {

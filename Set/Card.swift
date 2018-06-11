@@ -12,10 +12,50 @@ import Foundation
 
 struct Card: Hashable
 {
-    var number: Int
-    var symbol: Int
-    var shading: Int
-    var color: Int
+    var number: Number
+    var symbol: Symbol
+    var shading: Shading
+    var color: Color
+    
+    enum Number : Int {
+        case one = 1
+        case two = 2
+        case three = 3
+        
+        static var all: [Number] {
+            return [.one, .two, .three]
+        }
+    }
+    
+    enum Symbol: Int {
+        case diamond
+        case oval
+        case squiggle
+        
+        static var all: [Symbol] {
+            return [.diamond, .oval, .squiggle]
+        }
+    }
+    
+    enum Shading: Int {
+        case solid
+        case striped
+        case open
+        
+        static var all: [Shading] {
+            return [.solid, .striped, .open]
+        }
+    }
+    
+    enum Color: Int {
+        case teal
+        case pink
+        case purple
+        
+        static var all: [Color] {
+            return [.teal, .pink, .purple]
+        }
+    }
     
     var hashValue: Int { return identifier  }
     private(set) var identifier: Int
@@ -31,12 +71,11 @@ struct Card: Hashable
         return lhs.identifier == rhs.identifier
     }
     
-    init(number: Int, symbol: Int, shading: Int, color: Int) {
+    init(number: Number, symbol: Symbol, shading: Shading, color: Color) {
         self.identifier = Card.generateUUID()
         self.number = number
         self.symbol = symbol
         self.shading = shading
         self.color = color
     }
-    
 }
