@@ -10,13 +10,13 @@ import UIKit
 @IBDesignable
 class CardView: UIView {
     @IBInspectable
-    var number: Card.Number = .two { didSet { setNeedsDisplay() }}
+    var number: Card.Number = .three { didSet { setNeedsDisplay() }}
     @IBInspectable
-    var symbol: Card.Symbol = .diamond
+    var symbol: Card.Symbol = .oval
     @IBInspectable
-    var shading: Card.Shading = .striped
+    var shading: Card.Shading = .solid
     @IBInspectable
-    var color: Card.Color = .purple
+    var color: Card.Color = .pink
     
     
     override func draw(_ rect: CGRect) {
@@ -39,11 +39,11 @@ class CardView: UIView {
         // y needs to change based on Card.number
         switch number {
         case .one:
-            space = oneRow * 8
+            space = oneRow * 6
         case .two:
             space = oneRow * 4
         case .three:
-            space = oneRow
+            space = oneRow * 2
         }
         for _ in 0..<number.rawValue {
             print("create total:", number.rawValue)
@@ -66,7 +66,7 @@ class CardView: UIView {
 
 extension CardView {
     private var oneRow: CGFloat {
-        return bounds.height / 22
+        return bounds.height / 15
     }
     
     private var oneColumn: CGFloat {
@@ -74,13 +74,13 @@ extension CardView {
     }
     
     private var heightOfObject: CGFloat {
-        return oneRow * 6
+        return oneRow * 3
     }
     private var widthOfObject: CGFloat {
-        return bounds.width - oneColumn
+        return bounds.width - (oneColumn * 3 )
     }
     private var margin: CGFloat {
-        return bounds.minX + (oneColumn / 2)
+        return bounds.minX + (oneColumn * 1.5 )
     }
 }
 
