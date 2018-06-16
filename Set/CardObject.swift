@@ -28,7 +28,18 @@ class CardObject: UIView {
                 path.close()
                 return path
             case .squiggle:
-                return UIBezierPath(rect: bounds)
+                let bezierPath = UIBezierPath()
+                bezierPath.move(to: CGPoint(x: bounds.maxX * 0.10, y: bounds.maxY))
+                bezierPath.addCurve(to: CGPoint(x: bounds.minX, y: bounds.maxY * 0.80), controlPoint1: CGPoint(x: bounds.minX, y: bounds.maxY), controlPoint2: CGPoint(x: bounds.minX, y: bounds.maxY * 0.85))
+                bezierPath.addCurve(to: CGPoint(x: bounds.maxX * 0.30, y: bounds.minY), controlPoint1: CGPoint(x: bounds.minX, y: bounds.midY), controlPoint2: CGPoint(x: bounds.maxX * 0.11, y: bounds.minY))
+                bezierPath.addCurve(to: CGPoint(x: bounds.maxX * 0.65, y: bounds.maxY * 0.30), controlPoint1: CGPoint(x: bounds.midX, y: bounds.minY), controlPoint2: CGPoint(x: bounds.midX, y: bounds.midY))
+                bezierPath.addCurve(to: CGPoint(x: bounds.maxX * 0.90, y: bounds.minY), controlPoint1: CGPoint(x: bounds.maxX * 0.70, y: bounds.midY * 0.5), controlPoint2: CGPoint(x: bounds.maxX * 0.85, y: bounds.minY))
+                bezierPath.addCurve(to: CGPoint(x: bounds.maxX * 0.88, y: bounds.maxY * 0.88), controlPoint1: CGPoint(x: bounds.maxX * 1.10, y: bounds.minY), controlPoint2: CGPoint(x: bounds.maxX * 0.95, y: bounds.maxY * 0.80))
+                bezierPath.addCurve(to: CGPoint(x: bounds.maxX * 0.60, y: bounds.maxY * 0.90), controlPoint1: CGPoint(x: bounds.maxX * 0.80, y: bounds.maxY), controlPoint2: CGPoint(x: bounds.maxX * 0.75, y: bounds.maxY))
+                bezierPath.addCurve(to: CGPoint(x: bounds.maxX * 0.40, y: bounds.maxY * 0.75), controlPoint1: CGPoint(x: bounds.midX, y: bounds.maxY * 0.80), controlPoint2: CGPoint(x: bounds.midX, y: bounds.maxY * 0.80))
+                bezierPath.addCurve(to: CGPoint(x: bounds.maxX * 0.10, y: bounds.maxY), controlPoint1: CGPoint(x: bounds.maxX * 0.30, y: bounds.maxY * 0.75), controlPoint2: CGPoint(x: bounds.maxX * 0.20, y: bounds.maxY))
+                bezierPath.close()
+                return bezierPath
             }
         }
         return nil
