@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A98A6D4620D478A800187928 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98A6D4520D478A800187928 /* CardView.swift */; };
+		A98A6D4820D49F1000187928 /* CardObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98A6D4720D49F1000187928 /* CardObject.swift */; };
 		A9954D5120B76523007192D4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9954D5020B76523007192D4 /* AppDelegate.swift */; };
 		A9954D5320B76523007192D4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9954D5220B76523007192D4 /* ViewController.swift */; };
 		A9954D5620B76523007192D4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A9954D5420B76523007192D4 /* Main.storyboard */; };
@@ -17,6 +19,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A98A6D4520D478A800187928 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
+		A98A6D4720D49F1000187928 /* CardObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardObject.swift; sourceTree = "<group>"; };
 		A9954D4D20B76523007192D4 /* Set.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Set.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9954D5020B76523007192D4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A9954D5220B76523007192D4 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -60,6 +64,8 @@
 			children = (
 				A9954D6220B765E7007192D4 /* Supporting Files */,
 				A9954D5220B76523007192D4 /* ViewController.swift */,
+				A98A6D4520D478A800187928 /* CardView.swift */,
+				A98A6D4720D49F1000187928 /* CardObject.swift */,
 				A9954D5420B76523007192D4 /* Main.storyboard */,
 				A9954D5C20B76524007192D4 /* Info.plist */,
 				A9954D6320B767F5007192D4 /* Card.swift */,
@@ -152,7 +158,9 @@
 				A9954D6620B76CAD007192D4 /* SetGame.swift in Sources */,
 				A9954D5320B76523007192D4 /* ViewController.swift in Sources */,
 				A9954D6420B767F5007192D4 /* Card.swift in Sources */,
+				A98A6D4820D49F1000187928 /* CardObject.swift in Sources */,
 				A9954D5120B76523007192D4 /* AppDelegate.swift in Sources */,
+				A98A6D4620D478A800187928 /* CardView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

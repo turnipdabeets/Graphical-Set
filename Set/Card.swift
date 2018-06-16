@@ -19,7 +19,7 @@ struct Card: Hashable, CustomStringConvertible
     var shading: Shading
     var color: Color
     
-    enum Number : Int, CustomStringConvertible {
+    @objc enum Number : Int, CustomStringConvertible {
         var description: String {
             var title = ""
             switch self {
@@ -42,7 +42,7 @@ struct Card: Hashable, CustomStringConvertible
         }
     }
     
-    enum Symbol: Int, CustomStringConvertible {
+    @objc enum Symbol: Int, CustomStringConvertible {
         var description: String {
             var title = ""
             switch self {
@@ -65,7 +65,7 @@ struct Card: Hashable, CustomStringConvertible
         }
     }
     
-    enum Shading: Int, CustomStringConvertible {
+    @objc enum Shading: Int, CustomStringConvertible {
         var description: String {
             var title = ""
             switch self {
@@ -88,7 +88,7 @@ struct Card: Hashable, CustomStringConvertible
         }
     }
     
-    enum Color: Int, CustomStringConvertible {
+    @objc enum Color: Int, CustomStringConvertible {
         var description: String {
             var title = ""
             switch self {
