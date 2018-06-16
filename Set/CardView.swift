@@ -12,7 +12,7 @@ class CardView: UIView {
     @IBInspectable
     var number: Card.Number = .two { didSet { setNeedsDisplay() }}
     @IBInspectable
-    var symbol: Card.Symbol = .oval
+    var symbol: Card.Symbol = .diamond
     @IBInspectable
     var shading: Card.Shading = .striped
     @IBInspectable

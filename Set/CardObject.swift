@@ -20,7 +20,13 @@ class CardObject: UIView {
             case .oval:
                 return UIBezierPath(roundedRect: bounds, cornerRadius: 128)
             case .diamond:
-                return UIBezierPath(rect: bounds)
+                let path = UIBezierPath()
+                path.move(to: CGPoint(x: bounds.midX, y: bounds.minY))
+                path.addLine(to: CGPoint(x: bounds.minX, y: bounds.height / 2))
+                path.addLine(to: CGPoint(x: bounds.midX, y: bounds.maxY))
+                path.addLine(to: CGPoint(x:bounds.maxX, y: bounds.height / 2))
+                path.close()
+                return path
             case .squiggle:
                 return UIBezierPath(rect: bounds)
             }
