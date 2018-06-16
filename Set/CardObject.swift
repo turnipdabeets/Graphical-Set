@@ -45,22 +45,17 @@ class CardObject: UIView {
         return nil
     }
     
-    override init(frame: CGRect) {
+    init(frame: CGRect, symbol: Card.Symbol, shading: Card.Shading, color: Card.Color) {
         super.init(frame: frame)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
-    convenience init(frame: CGRect, symbol: Card.Symbol, shading: Card.Shading, color: Card.Color) {
-        self.init(frame: frame)
         self.symbol = symbol
         self.shading = shading
         self.color = color
         backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
     }
     
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
     
     override func draw(_ rect: CGRect) {
         if let shape = objectPath, let shading = shading, let cardColor = color {
