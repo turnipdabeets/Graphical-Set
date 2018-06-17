@@ -12,38 +12,46 @@ class CardView: UIView {
     @IBInspectable
     var number: Card.Number = .three { didSet { setNeedsDisplay() }}
     @IBInspectable
-    var symbol: Card.Symbol = .oval
+    var symbol: Card.Symbol = .squiggle
     @IBInspectable
-    var shading: Card.Shading = .solid
+    var shading: Card.Shading = .striped
     @IBInspectable
-    var color: Card.Color = .pink
+    var color: Card.Color = .purple
     
     
     override func draw(_ rect: CGRect) {
         // Drawing code
-        drawCard()
+        drawCardCanvas()
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        
+        // draw any number of card objects on card
         for frame in 0..<number.rawValue {
             let object = CardObject(frame: objectFrame[frame], symbol: symbol, shading: shading, color: color)
             addSubview(object)
         }
     }
     
+    private func drawCardCanvas(){
+        let roundedRect = UIBezierPath(roundedRect: bounds, cornerRadius: cornerRadius)
+        UIColor.white.setFill()
+        roundedRect.fill()
+    }
+    
+    /// get frames to init cardObject depending on number of cards
     private var objectFrame: [CGRect] {
         var frames = [CGRect]()
         var space: CGFloat
-        // y needs to change based on Card.number
+        
+        // get initial space
         switch number {
         case .one:
-            space = oneRow * 6
+            space = initialSpaceForOneCard
         case .two:
-            space = oneRow * 4
+            space = initialSpaceForTwoCards
         case .three:
-            space = oneRow * 2
+            space = initialSpaceForThreeCard
         }
         for _ in 0..<number.rawValue {
             print("create total:", number.rawValue)
@@ -53,18 +61,12 @@ class CardView: UIView {
         }
         return frames
     }
-    
-    private func drawCard(){
-        let roundedRect = UIBezierPath(roundedRect: bounds, cornerRadius: 16.0)
-        roundedRect.addClip()
-        UIColor.white.setFill()
-        roundedRect.fill()
-    }
-    
-    
 }
 
 extension CardView {
+    private var cornerRadius: CGFloat {
+        return 16.0
+    }
     private var oneRow: CGFloat {
         return bounds.height / 15
     }
@@ -81,6 +83,15 @@ extension CardView {
     }
     private var margin: CGFloat {
         return bounds.minX + (oneColumn * 1.5 )
+    }
+    private var initialSpaceForOneCard: CGFloat {
+        return oneRow * 6
+    }
+    private var initialSpaceForTwoCards: CGFloat {
+        return oneRow * 4
+    }
+    private var initialSpaceForThreeCard: CGFloat {
+        return oneRow * 2
     }
 }
 
