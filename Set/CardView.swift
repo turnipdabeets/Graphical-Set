@@ -65,7 +65,7 @@ class CardView: UIView {
 
 extension CardView {
     private var cornerRadius: CGFloat {
-        return 16.0
+        return bounds.height * 0.03
     }
     private var oneRow: CGFloat {
         return bounds.height / 15
