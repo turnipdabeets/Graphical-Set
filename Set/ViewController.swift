@@ -10,6 +10,20 @@ import UIKit
 
 class ViewController: UIViewController {
     private var game = SetGame()
+    private lazy var grid = CardTableView(frame: CardTable.bounds, cardsInPlay: visibleCards)
+    // table to place all cards
+    @IBOutlet weak var CardTable: UIView! {
+        didSet {
+            // set up buttons with 12 cards
+            initalDeal()
+        }
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        CardTable.addSubview(grid)
+    }
+    
     private var visibleCards = [Card]()
     private var allCardsMatched: Bool {
         let cards = visibleCards.filter({card in
@@ -118,10 +132,10 @@ class ViewController: UIViewController {
     }
     
     private func initalDeal(){
-        for index in 0..<12 {
+        for _ in 0..<12 {
             if let card = game.drawCard() {
                 visibleCards.append(card)
-                style(a: cardButtons[index], by: card)
+//                style(a: cardButtons[index], by: card)
             }
         }
     }

@@ -16,6 +16,7 @@
 		A9954D5B20B76524007192D4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A9954D5920B76524007192D4 /* LaunchScreen.storyboard */; };
 		A9954D6420B767F5007192D4 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9954D6320B767F5007192D4 /* Card.swift */; };
 		A9954D6620B76CAD007192D4 /* SetGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9954D6520B76CAD007192D4 /* SetGame.swift */; };
+		A9B9BE1220D5EC360007B646 /* CardTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B9BE1120D5EC360007B646 /* CardTableView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		A9954D5C20B76524007192D4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A9954D6320B767F5007192D4 /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 		A9954D6520B76CAD007192D4 /* SetGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetGame.swift; sourceTree = "<group>"; };
+		A9B9BE1120D5EC360007B646 /* CardTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardTableView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +72,7 @@
 				A9954D5C20B76524007192D4 /* Info.plist */,
 				A9954D6320B767F5007192D4 /* Card.swift */,
 				A9954D6520B76CAD007192D4 /* SetGame.swift */,
+				A9B9BE1120D5EC360007B646 /* CardTableView.swift */,
 			);
 			path = Set;
 			sourceTree = "<group>";
@@ -159,6 +162,7 @@
 				A9954D5320B76523007192D4 /* ViewController.swift in Sources */,
 				A9954D6420B767F5007192D4 /* Card.swift in Sources */,
 				A98A6D4820D49F1000187928 /* CardObject.swift in Sources */,
+				A9B9BE1220D5EC360007B646 /* CardTableView.swift in Sources */,
 				A9954D5120B76523007192D4 /* AppDelegate.swift in Sources */,
 				A98A6D4620D478A800187928 /* CardView.swift in Sources */,
 			);

@@ -7,17 +7,24 @@
 //
 
 import UIKit
-@IBDesignable
 class CardView: UIView {
-    @IBInspectable
-    var number: Card.Number = .three { didSet { setNeedsDisplay() }}
-    @IBInspectable
-    var symbol: Card.Symbol = .squiggle
-    @IBInspectable
-    var shading: Card.Shading = .striped
-    @IBInspectable
-    var color: Card.Color = .purple
+    private var number: Card.Number? { didSet { setNeedsDisplay() }}
+    private var symbol: Card.Symbol? { didSet { setNeedsDisplay() }}
+    private var shading: Card.Shading? { didSet { setNeedsDisplay() }}
+    private var color: Card.Color? { didSet { setNeedsDisplay() }}
     
+    init(frame: CGRect, number: Card.Number, symbol: Card.Symbol, shading: Card.Shading, color: Card.Color) {
+        super.init(frame: frame)
+        self.number = number
+        self.symbol = symbol
+        self.shading = shading
+        self.color = color
+        backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func draw(_ rect: CGRect) {
         // Drawing code
@@ -27,9 +34,11 @@ class CardView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         // draw any number of card objects on card
-        for frame in 0..<number.rawValue {
-            let object = CardObject(frame: objectFrame[frame], symbol: symbol, shading: shading, color: color)
-            addSubview(object)
+        if let number = number, let symbol = symbol, let shading = shading, let color = color, let objectFrame = objectFrame {
+            for frame in 0..<number.rawValue {
+                let object = CardObject(frame: objectFrame[frame], symbol: symbol, shading: shading, color: color)
+                addSubview(object)
+            }
         }
     }
     
@@ -40,26 +49,28 @@ class CardView: UIView {
     }
     
     /// get frames to init cardObject depending on number of cards
-    private var objectFrame: [CGRect] {
+    private var objectFrame: [CGRect]? {
         var frames = [CGRect]()
         var space: CGFloat
-        
-        // get initial space
-        switch number {
-        case .one:
-            space = initialSpaceForOneCard
-        case .two:
-            space = initialSpaceForTwoCards
-        case .three:
-            space = initialSpaceForThreeCard
+        if let number = number {
+            // get initial space
+            switch number {
+            case .one:
+                space = initialSpaceForOneCard
+            case .two:
+                space = initialSpaceForTwoCards
+            case .three:
+                space = initialSpaceForThreeCard
+            }
+            for _ in 0..<number.rawValue {
+                // TODO: figure out why this happens multiple times for one card
+                let frame = CGRect(x: margin, y: space, width: widthOfObject, height: heightOfObject)
+                frames.append(frame)
+                space += oneRow + heightOfObject
+            }
+            return frames
         }
-        for _ in 0..<number.rawValue {
-            print("create total:", number.rawValue)
-            let frame = CGRect(x: margin, y: space, width: widthOfObject, height: heightOfObject)
-            frames.append(frame)
-            space += oneRow + heightOfObject
-        }
-        return frames
+        return nil
     }
 }
 
