@@ -92,7 +92,7 @@ class CardObject: UIView {
         shape.fill()
     }
     private func drawStripes() {
-        for x in stride(from: 0, to: bounds.width * 2, by: bounds.width / 40) {
+        for x in stride(from: 0, to: bounds.width * 2, by: bounds.width * 0.06) {
             let path = UIBezierPath()
             path.move(to: CGPoint(x: x, y: 0))
             path.addLine(to: CGPoint(x: 0, y: x))
