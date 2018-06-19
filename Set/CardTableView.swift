@@ -37,20 +37,26 @@ class CardTableView: UIView {
         let dimensions = getDimensionsWith(aspectRatio: Const.aspectRatio, space: Const.space)
         let cardWidth = dimensions.width + Const.space
         let cardHeight = dimensions.height + Const.space
-        var x = bounds.minX
+        // calculate margin from excess space
+        var cardsPerRow = bounds.width / dimensions.width
+        var cardsPerCols = bounds.height / dimensions.height
+        cardsPerRow.round(.down)
+        cardsPerCols.round(.down)
+        let marginWidth = (bounds.width - cardWidth * cardsPerRow) / 2
+        let marginHeight = (bounds.height - cardHeight * cardsPerCols) / 2
+        let margin = marginWidth > marginHeight ? marginWidth : marginHeight
+        var x = bounds.minX + margin
         var y = bounds.minY
         
         for card in cards {
-            //            print("x, y", x, y)
             let playingCard = CardView(frame: CGRect(x: x, y: y, width: dimensions.width, height: dimensions.height), number: card.number, symbol: card.symbol, shading: card.shading, color: card.color)
             addSubview(playingCard)
-            
             x += cardWidth
             
             // start a new row if card after next is out of bounds
             if(x + cardWidth >= bounds.width){
                 y += cardHeight
-                x = CGFloat(0)
+                x = margin
             }
         }
     }
@@ -76,9 +82,7 @@ class CardTableView: UIView {
             rows = CGFloat(ceil(Double(cards.count) / Double(cols)))
             
             ch = (bounds.height - (numCols - 1) * space ) / cols
-            print("ch", ch)
             cw = ch / aspectRatio
-            print("cw", cw, aspectRatio)
             
             if(rows * ch + (rows - 1) * space > bounds.height){
                 col(iterator: cols + 1)
