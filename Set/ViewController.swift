@@ -19,7 +19,18 @@ class ViewController: UIViewController {
             initalDeal()
         }
     }
-    
+    @IBAction func newGame(_ sender: UIButton) {
+        score = 0
+        game = SetGame()
+        visibleCards.removeAll()
+        matched.removeAll()
+        misMatched.removeAll()
+        dealMoreButton.isEnabled = true
+        dealMoreButton.setTitleColor(#colorLiteral(red: 0.231372549, green: 0.6, blue: 0.9882352941, alpha: 1), for: .normal)
+        initalDeal()
+        grid.cards = visibleCards
+    }
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         // reset frame when device rotates
@@ -76,10 +87,10 @@ class ViewController: UIViewController {
         sender.setTitleColor(#colorLiteral(red: 0.5, green: 0.5, blue: 0.5, alpha: 1), for: .normal)
     }
     private func clearAndDeal(){
+        //TODO: rewrite me
         for card in matched {
             if let index = visibleCards.index(of: card){
                 // remove matched styles
-//                removeStyleFrom(button: cardButtons[index])
                 // draw new card
                 if let newCard = game.drawCard() {
                     // swap with old card
@@ -93,7 +104,6 @@ class ViewController: UIViewController {
         matched.removeAll()
     }
     
-    
     private var allCardsMatched: Bool {
         let cards = visibleCards.filter({card in
 //            if let index = visibleCards.index(of: card){
@@ -104,34 +114,8 @@ class ViewController: UIViewController {
         return cards.count == 3
     }
     
-    private var misMatched = [Card]() {
-        didSet {
-            if !misMatched.isEmpty {
-                infoLabel.text = "try again..."
-            }else {
-                resetInfoLabel()
-            }
-        }
-    }
-    private var matched = [Card]() {
-        didSet {
-            if !matched.isEmpty {
-                infoLabel.numberOfLines = 2
-                infoLabel.lineBreakMode = .byWordWrapping
-                matchLabel.text = allCardsMatched ? "YOU WIN!" : "MATCH!"
-                if !game.cards.isEmpty {
-                    infoLabel.text = "deal three more cards..."
-                }else {
-                    resetInfoLabel()
-                }
-            }else {
-                resetMatchLabel()
-                resetInfoLabel()
-            }
-        }
-    }
-    @IBOutlet weak var matchLabel: UILabel!
-    @IBOutlet weak var infoLabel: UILabel!
+    private var misMatched = [Card]()
+    private var matched = [Card]()
     
     @IBAction func selectCard(_ sender: UIButton) {
         // must deal more cards if we have a match first
@@ -149,30 +133,6 @@ class ViewController: UIViewController {
         // check for match
         checkIfCardsMatch()
     }
-    @IBAction func newGame(_ sender: UIButton) {
-        score = 0
-        game = SetGame()
-        visibleCards.removeAll()
-        matched.removeAll()
-        misMatched.removeAll()
-        resetInfoLabel()
-        resetMatchLabel()
-        resetButtons()
-        initalDeal()
-    }
-    
-    private func resetButtons(){
-        // reset cardButtons
-//        for button in cardButtons {
-//            button.isEnabled = true
-//            button.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0)
-//            button.setAttributedTitle(NSAttributedString(string: ""), for: .normal)
-//        }
-        // reset dealMoreButton
-        dealMoreButton.isEnabled = true
-        dealMoreButton.backgroundColor = #colorLiteral(red: 0.231372549, green: 0.6, blue: 0.9882352941, alpha: 1)
-        dealMoreButton.setTitleColor(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1), for: .normal)
-    }
     
     private func initalDeal(){
         for _ in 0..<12 {
@@ -181,17 +141,6 @@ class ViewController: UIViewController {
 //                style(a: cardButtons[index], by: card)
             }
         }
-    }
-    
-    private func resetInfoLabel() {
-        let emptyDeck = "all cards are on the table!"
-        infoLabel.numberOfLines = 2
-        infoLabel.lineBreakMode = .byWordWrapping
-        infoLabel.text = game.cards.isEmpty ? emptyDeck : ""
-    }
-    
-    private func resetMatchLabel(){
-        matchLabel.text = ""
     }
     
     private func toggleCardSelection(by index: Int){

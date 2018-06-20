@@ -41,7 +41,10 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iaV-VC-fg1">
                                         <rect key="frame" x="234" y="0.0" width="109" height="30"/>
-                                        <state key="normal" title="Button"/>
+                                        <state key="normal" title="New Game"/>
+                                        <connections>
+                                            <action selector="newGame:" destination="BYZ-38-t0r" eventType="touchUpInside" id="UjM-SU-dPv"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>
