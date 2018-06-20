@@ -9,8 +9,12 @@
 import UIKit
 
 class CardTableView: UIView {
-    // TODO:// i probably need to set redraw for getting new cards
-    private var cards = [Card]()
+    var cards = [Card]() {
+        didSet {
+            setNeedsDisplay()
+            setNeedsLayout()
+        }
+    }
     
     init(frame: CGRect, cardsInPlay: [Card]) {
         super.init(frame: frame)

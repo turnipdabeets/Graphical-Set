@@ -9,6 +9,7 @@
 import UIKit
 
 class ViewController: UIViewController {
+    // Game
     private var game = SetGame()
     private lazy var grid = CardTableView(frame: CardTable.bounds, cardsInPlay: visibleCards)
     // table to place all cards
@@ -27,6 +28,8 @@ class ViewController: UIViewController {
         // add cards to the card table
         CardTable.addSubview(grid)
     }
+    // Cards
+    private var visibleCards = [Card]()
     
     // Score
     @IBOutlet weak var scoreLabel: UILabel! {
@@ -39,14 +42,63 @@ class ViewController: UIViewController {
             scoreLabel.text = "Score: \(score)"
         }
     }
-
     
-    private var visibleCards = [Card]()
+    // Deal
+    @IBOutlet weak var dealMoreButton: UIButton!
+    @IBAction func deal(_ sender: UIButton) {
+        // have a match and cards available to deal
+        if !matched.isEmpty && !game.cards.isEmpty {
+            //TODO: fix this for new UI
+            clearAndDeal()
+        } else {
+            dealThreeMore()
+        }
+        // disable if we run out of cards
+        if game.cards.isEmpty {
+            disable(button: sender)
+        }
+        grid.cards = visibleCards
+    }
+    private func dealThreeMore(){
+        if visibleCards.count < game.cardTotal {
+            for _ in 0..<3 {
+                if let card = game.drawCard() {
+                    // add more visible cards
+                    visibleCards.append(card)
+                } else {
+                    print("ran out of cards in the deck!")
+                }
+            }
+        }
+    }
+    private func disable(button sender: UIButton){
+        sender.isEnabled = false
+        sender.setTitleColor(#colorLiteral(red: 0.5, green: 0.5, blue: 0.5, alpha: 1), for: .normal)
+    }
+    private func clearAndDeal(){
+        for card in matched {
+            if let index = visibleCards.index(of: card){
+                // remove matched styles
+//                removeStyleFrom(button: cardButtons[index])
+                // draw new card
+                if let newCard = game.drawCard() {
+                    // swap with old card
+                    replace(old: index, with: newCard)
+                } else {
+                    // ran out of cards in the deck!
+                    hideButton(by: index)
+                }
+            }
+        }
+        matched.removeAll()
+    }
+    
+    
     private var allCardsMatched: Bool {
         let cards = visibleCards.filter({card in
-            if let index = visibleCards.index(of: card){
-                return cardButtons[index].isEnabled
-            }
+//            if let index = visibleCards.index(of: card){
+////                return cardButtons[index].isEnabled
+//            }
             return false
         })
         return cards.count == 3
@@ -80,28 +132,7 @@ class ViewController: UIViewController {
     }
     @IBOutlet weak var matchLabel: UILabel!
     @IBOutlet weak var infoLabel: UILabel!
-    @IBOutlet var cardButtons: [UIButton]! {
-        didSet {
-            // set up buttons with 12 cards
-            initalDeal()
-        }
-    }
-    @IBOutlet weak var dealMoreButton: UIButton!
-    @IBAction func dealThreeMore(_ sender: UIButton) {
-        // have a match and cards available to deal
-        if !matched.isEmpty && !game.cards.isEmpty {
-            clearAndDeal()
-        } else {
-            // deal three more cards
-            //TODO: make sure no set exists before allow dealing more?
-            deal()
-        }
-        // disable if we run out of cards
-        if game.cards.isEmpty {
-            disable(button: sender)
-            resetInfoLabel()
-        }
-    }
+    
     @IBAction func selectCard(_ sender: UIButton) {
         // must deal more cards if we have a match first
         if !matched.isEmpty && !game.cards.isEmpty { return }
@@ -113,7 +144,7 @@ class ViewController: UIViewController {
         if !misMatched.isEmpty { resetMisMatchedStyle() }
         
         // select or deselect card
-        if let index = cardButtons.index(of: sender) { toggleCardSelection(by: index)}
+//        if let index = cardButtons.index(of: sender) { toggleCardSelection(by: index)}
         
         // check for match
         checkIfCardsMatch()
@@ -132,11 +163,11 @@ class ViewController: UIViewController {
     
     private func resetButtons(){
         // reset cardButtons
-        for button in cardButtons {
-            button.isEnabled = true
-            button.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0)
-            button.setAttributedTitle(NSAttributedString(string: ""), for: .normal)
-        }
+//        for button in cardButtons {
+//            button.isEnabled = true
+//            button.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0)
+//            button.setAttributedTitle(NSAttributedString(string: ""), for: .normal)
+//        }
         // reset dealMoreButton
         dealMoreButton.isEnabled = true
         dealMoreButton.backgroundColor = #colorLiteral(red: 0.231372549, green: 0.6, blue: 0.9882352941, alpha: 1)
@@ -165,63 +196,22 @@ class ViewController: UIViewController {
     
     private func toggleCardSelection(by index: Int){
         if visibleCards.indices.contains(index) {
-            if cardButtons[index].isEnabled {
-                game.select(card: visibleCards[index])
-                styleTouched(button: cardButtons[index], by: visibleCards[index])
-            }
+//            if cardButtons[index].isEnabled {
+//                game.select(card: visibleCards[index])
+//                styleTouched(button: cardButtons[index], by: visibleCards[index])
+//            }
         }
-    }
-    
-    private func disable(button sender: UIButton){
-        sender.isEnabled = false
-        sender.backgroundColor = #colorLiteral(red: 0.8000000119, green: 0.8000000119, blue: 0.8000000119, alpha: 1)
-        sender.setTitleColor(#colorLiteral(red: 0.5, green: 0.5, blue: 0.5, alpha: 1), for: .normal)
     }
     
     private func removeStyleFrom(button: UIButton){
         button.layer.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
     }
     
-    private func clearAndDeal(){
-        for card in matched {
-            if let index = visibleCards.index(of: card){
-                // remove matched styles
-                removeStyleFrom(button: cardButtons[index])
-                // draw new card
-                if let newCard = game.drawCard() {
-                    // swap with old card
-                    replace(old: index, with: newCard)
-                } else {
-                    // ran out of cards in the deck!
-                    hideButton(by: index)
-                }
-            }
-        }
-        matched.removeAll()
-    }
-    
-    private func deal(){
-        if visibleCards.count < cardButtons.count {
-            let lastVisibleCardIndex = visibleCards.count
-            for index in 0..<3 {
-                if let card = game.drawCard() {
-                    // add more visible cards
-                    visibleCards.append(card)
-                    style(a: cardButtons[index + lastVisibleCardIndex], by: card)
-                } else {
-                    print("ran out of cards in the deck!")
-                }
-            }
-        } else {
-            print("ran out of button space")
-        }
-    }
-    
     private func resetMisMatchedStyle(){
         for card in misMatched {
             if let index = visibleCards.index(of: card){
                 // remove style
-                removeStyleFrom(button: cardButtons[index])
+//                removeStyleFrom(button: cardButtons[index])
             }
         }
         misMatched.removeAll()
@@ -246,8 +236,8 @@ class ViewController: UIViewController {
     private func styleMatchedCards(){
         for card in matched {
             if let index = visibleCards.index(of: card){
-                let button = cardButtons[index]
-                button.layer.backgroundColor = #colorLiteral(red: 0.6833661724, green: 0.942397684, blue: 0.7068206713, alpha: 1)
+//                let button = cardButtons[index]
+//                button.layer.backgroundColor = #colorLiteral(red: 0.6833661724, green: 0.942397684, blue: 0.7068206713, alpha: 1)
             }
         }
     }
@@ -255,22 +245,22 @@ class ViewController: UIViewController {
     private func styleMisMatchedCards(){
         for card in misMatched {
             if let index = visibleCards.index(of: card){
-                let button = cardButtons[index]
-                button.layer.backgroundColor = #colorLiteral(red: 1, green: 0.8087172196, blue: 0.7614216844, alpha: 1)
+//                let button = cardButtons[index]
+//                button.layer.backgroundColor = #colorLiteral(red: 1, green: 0.8087172196, blue: 0.7614216844, alpha: 1)
             }
         }
     }
     
     private func replace(old index: Int, with newCard: Card){
         visibleCards[index] = newCard
-        style(a: cardButtons[index], by: newCard)
+//        style(a: cardButtons[index], by: newCard)
     }
     
     private func hideButton(by index: Int){
-        let button = cardButtons[index]
-        button.setAttributedTitle(NSAttributedString(string:""), for: .normal)
-        button.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0)
-        button.isEnabled = false
+//        let button = cardButtons[index]
+//        button.setAttributedTitle(NSAttributedString(string:""), for: .normal)
+//        button.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0)
+//        button.isEnabled = false
     }
     
     private func styleTouched(button: UIButton, by card: Card) {

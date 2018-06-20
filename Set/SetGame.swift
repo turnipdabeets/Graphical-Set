@@ -10,14 +10,15 @@ import Foundation
 
 struct SetGame
 {
+    private(set) var cardTotal = 81
     private(set) var cards = [Card]()
     private(set) var selectedCards = [Card]()
     
     init(){
-//        makeDeck()
-        for _ in 0..<15 {
-            cards.append(Card(number: Card.Number.one, symbol: Card.Symbol.diamond, shading: Card.Shading.open, color:Card.Color.purple))
-        }
+        makeDeck()
+//        for _ in 0..<21 {
+//            cards.append(Card(number: Card.Number.one, symbol: Card.Symbol.diamond, shading: Card.Shading.open, color:Card.Color.purple))
+//        }
     }
     
     mutating private func makeDeck(){

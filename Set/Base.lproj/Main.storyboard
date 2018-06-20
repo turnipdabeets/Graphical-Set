@@ -34,7 +34,10 @@
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MkZ-A5-bz6">
                                         <rect key="frame" x="117" y="0.0" width="109" height="30"/>
-                                        <state key="normal" title="Button"/>
+                                        <state key="normal" title="Deal"/>
+                                        <connections>
+                                            <action selector="deal:" destination="BYZ-38-t0r" eventType="touchUpInside" id="M6q-lB-uMh"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iaV-VC-fg1">
                                         <rect key="frame" x="234" y="0.0" width="109" height="30"/>
@@ -57,6 +60,7 @@
                     </view>
                     <connections>
                         <outlet property="CardTable" destination="lkS-tY-Z4l" id="MjZ-gA-aEr"/>
+                        <outlet property="dealMoreButton" destination="MkZ-A5-bz6" id="za2-go-3fS"/>
                         <outlet property="scoreLabel" destination="PNq-7T-GWq" id="yWW-7l-SRA"/>
                     </connections>
                 </viewController>
