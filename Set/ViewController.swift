@@ -21,6 +21,9 @@ class ViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        // reset frame when device rotates
+        grid.frame = CardTable.bounds
+        // add cards to the card table
         CardTable.addSubview(grid)
     }
     

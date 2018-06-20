@@ -8,10 +8,26 @@
 
 import UIKit
 class CardView: UIView {
-    private var number: Card.Number? { didSet { setNeedsDisplay() }}
-    private var symbol: Card.Symbol? { didSet { setNeedsDisplay() }}
-    private var shading: Card.Shading? { didSet { setNeedsDisplay() }}
-    private var color: Card.Color? { didSet { setNeedsDisplay() }}
+    private var number: Card.Number? {
+        didSet{
+            setNeedsDisplay()
+        }
+    }
+    private var symbol: Card.Symbol? {
+        didSet{
+            setNeedsDisplay()
+        }
+    }
+    private var shading: Card.Shading? {
+        didSet{
+            setNeedsDisplay()
+        }
+    }
+    private var color: Card.Color? {
+        didSet{
+            setNeedsDisplay()
+        }
+    }
     
     init(frame: CGRect, number: Card.Number, symbol: Card.Symbol, shading: Card.Shading, color: Card.Color) {
         super.init(frame: frame)
@@ -44,7 +60,7 @@ class CardView: UIView {
     
     private func drawCardCanvas(){
         let roundedRect = UIBezierPath(roundedRect: bounds, cornerRadius: cornerRadius)
-        UIColor.white.setFill()
+        #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0).setFill()
         roundedRect.fill()
     }
     
