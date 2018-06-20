@@ -61,7 +61,10 @@ class CardView: UIView {
     private func drawCardCanvas(){
         let roundedRect = UIBezierPath(roundedRect: bounds, cornerRadius: cornerRadius)
         #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0).setFill()
+        #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1).setStroke()
+        
         roundedRect.fill()
+        roundedRect.stroke()
     }
     
     /// get frames to init cardObject depending on number of cards

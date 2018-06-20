@@ -12,12 +12,11 @@ class CardTableView: UIView {
     // TODO:// i probably need to set redraw for getting new cards
     private var cards = [Card]()
     
-    
     init(frame: CGRect, cardsInPlay: [Card]) {
         super.init(frame: frame)
         self.cards = cardsInPlay
         //TODO: set this to clear
-        backgroundColor = #colorLiteral(red: 0.9472620869, green: 0.1898318151, blue: 0.172613248, alpha: 1)
+        backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -33,7 +32,10 @@ class CardTableView: UIView {
     override func layoutSubviews() {
         print(cards)
         super.layoutSubviews()
-        
+        // remove any cards before drawing them incase of screen rotation
+        for cardView in self.subviews {
+            cardView.removeFromSuperview()
+        }
         let dimensions = getDimensionsWith(aspectRatio: Const.aspectRatio, space: Const.space)
         let cardWidth = dimensions.width + Const.space
         let cardHeight = dimensions.height + Const.space
@@ -42,6 +44,7 @@ class CardTableView: UIView {
         var cardsPerCols = bounds.height / dimensions.height
         cardsPerRow.round(.down)
         cardsPerCols.round(.down)
+        
         let marginWidth = (bounds.width - cardWidth * cardsPerRow) / 2
         let marginHeight = (bounds.height - cardHeight * cardsPerCols) / 2
         let margin = marginWidth > marginHeight ? marginWidth : marginHeight
