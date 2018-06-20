@@ -23,9 +23,23 @@ class ViewController: UIViewController {
         super.viewDidLayoutSubviews()
         // reset frame when device rotates
         grid.frame = CardTable.bounds
+
         // add cards to the card table
         CardTable.addSubview(grid)
     }
+    
+    // Score
+    @IBOutlet weak var scoreLabel: UILabel! {
+        didSet {
+            scoreLabel.text = "Score: \(score)"
+        }
+    }
+    private var score = 0 {
+        didSet {
+            scoreLabel.text = "Score: \(score)"
+        }
+    }
+
     
     private var visibleCards = [Card]()
     private var allCardsMatched: Bool {
@@ -37,11 +51,7 @@ class ViewController: UIViewController {
         })
         return cards.count == 3
     }
-    private var score = 0 {
-        didSet {
-            scoreLabel.text = "Score: \(score)"
-        }
-    }
+    
     private var misMatched = [Card]() {
         didSet {
             if !misMatched.isEmpty {
@@ -68,7 +78,6 @@ class ViewController: UIViewController {
             }
         }
     }
-    @IBOutlet weak var scoreLabel: UILabel!
     @IBOutlet weak var matchLabel: UILabel!
     @IBOutlet weak var infoLabel: UILabel!
     @IBOutlet var cardButtons: [UIButton]! {
