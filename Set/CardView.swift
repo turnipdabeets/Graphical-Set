@@ -8,6 +8,10 @@
 
 import UIKit
 class CardView: UIView {
+    weak var delegate: ButtonDelegate?
+    
+    private var card: Card?
+    
     private var number: Card.Number? {
         didSet{
             setNeedsDisplay()
@@ -40,17 +44,30 @@ class CardView: UIView {
         self.symbol = symbol
         self.shading = shading
         self.color = color
+        self.card = Card(number: number, symbol: symbol, shading: shading, color: color)
+        
         self.tag = 100
         backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
-//        let tap = UITapGestureRecognizer(target: self, action: #selector(tapMe))
-//        self.addGestureRecognizer(tap)
+        let tap = UITapGestureRecognizer(target: self, action: #selector(tapMe))
+        self.addGestureRecognizer(tap)
     }
     
-//    @objc func tapMe(){
-//        toggleBorderColor()
-//
-//        print("tap")
-//    }
+    @objc func tapMe(){
+        toggleBorderColor()
+        onButtonTap()
+        print("tap")
+        
+    }
+    
+    func onButtonTap(){
+        print("ontap")
+        if let d = delegate {
+            print("delegate", d)
+        }
+        if let card = card {
+            delegate?.onButtonTap(card: card)
+        }
+    }
     
     private func toggleBorderColor(){
         showBorder = !showBorder
@@ -145,5 +162,9 @@ extension CardView {
     private var initialSpaceForThreeCard: CGFloat {
         return oneRow * 2
     }
+}
+
+protocol ButtonDelegate: class {
+    func onButtonTap(card: Card)
 }
 

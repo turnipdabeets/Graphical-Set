@@ -8,7 +8,16 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, ButtonDelegate {
+    func onButtonTap(card: Card) {
+        print("This button was clicked in the subview!")
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // assigning the delegate DOES NOT WORK!
+        CardView.delegate = self
+    }
     // Game
     private var game = SetGame()
     private lazy var grid = CardTableView(frame: CardTable.bounds, cardsInPlay: visibleCards)
@@ -105,27 +114,27 @@ class ViewController: UIViewController {
     }
     
     // Gestures
-    @IBAction func tapCard(recognizer:UITapGestureRecognizer) {
-        print("view")
-        if recognizer.state == .ended {
-            let location = recognizer.location(in: CardTable)
-            print("TAP", location)
-            if let cardView = CardTable.viewWithTag(100) {
-                print("cardView ",cardView)
-            }
-//            if let tappedView = CardTable.hitTest(location, with: nil) {
-//                print("tappedView", tappedView)
-//                //                if let tableView = CardTable.viewWithTag(CardView) {
-//                //                    print( tableView)
-//                //                }
-//                if let cardIndex = CardTable.subviews.index(of: tappedView) {
-//                    print(cardIndex)
-//                    //                    setGame.selectCard(at: cardIndex)
-//                    //                    updateView()
-//                }
+//    @IBAction func tapCard(recognizer:UITapGestureRecognizer) {
+//        print("view")
+//        if recognizer.state == .ended {
+//            let location = recognizer.location(in: CardTable)
+//            print("TAP", location)
+//            if let cardView = CardTable.viewWithTag(100) {
+//                print("cardView ",cardView)
 //            }
-        }
-    }
+////            if let tappedView = CardTable.hitTest(location, with: nil) {
+////                print("tappedView", tappedView)
+////                //                if let tableView = CardTable.viewWithTag(CardView) {
+////                //                    print( tableView)
+////                //                }
+////                if let cardIndex = CardTable.subviews.index(of: tappedView) {
+////                    print(cardIndex)
+////                    //                    setGame.selectCard(at: cardIndex)
+////                    //                    updateView()
+////                }
+////            }
+//        }
+//    }
     
     private var allCardsMatched: Bool {
         let cards = visibleCards.filter({card in
