@@ -23,9 +23,6 @@
                                 <rect key="frame" x="16" y="69" width="343" height="582"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="Tvh-i6-Agx" appends="YES" id="Aet-AG-Fzg"/>
-                                </connections>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="mPt-t8-By8">
                                 <rect key="frame" x="16" y="28.5" width="343" height="30"/>
@@ -72,11 +69,7 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="Tvh-i6-Agx">
-                    <connections>
-                        <action selector="tapCardWithRecognizer:" destination="BYZ-38-t0r" id="AMd-pS-SSD"/>
-                    </connections>
-                </tapGestureRecognizer>
+                <tapGestureRecognizer id="Tvh-i6-Agx"/>
             </objects>
             <point key="canvasLocation" x="136.80000000000001" y="133.5832083958021"/>
         </scene>

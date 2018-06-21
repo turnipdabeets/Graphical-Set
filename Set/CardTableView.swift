@@ -8,7 +8,20 @@
 
 import UIKit
 
-class CardTableView: UIView {
+protocol CardTableViewDelegate: class {
+    func delegateCardTap(card: Card)
+}
+
+class CardTableView: UIView, CardViewDelegate {
+    weak var delegate: CardTableViewDelegate?
+    func onButtonTap(card: Card) {
+        print("This button was clicked in the subview!", card)
+        delegateCardTap(card: card)
+    }
+    func delegateCardTap(card: Card){
+        delegate?.delegateCardTap(card: card)
+    }
+    
     var cards = [Card]() {
         didSet {
             setNeedsDisplay()
@@ -19,7 +32,6 @@ class CardTableView: UIView {
     init(frame: CGRect, cardsInPlay: [Card]) {
         super.init(frame: frame)
         self.cards = cardsInPlay
-        //TODO: set this to clear
         backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
     }
     
@@ -58,6 +70,7 @@ class CardTableView: UIView {
         for card in cards {
             let playingCard = CardView(frame: CGRect(x: x, y: y, width: dimensions.width, height: dimensions.height), number: card.number, symbol: card.symbol, shading: card.shading, color: card.color)
             addSubview(playingCard)
+            playingCard.delegate = self
             x += cardWidth
             
             // start a new row if card after next is out of bounds

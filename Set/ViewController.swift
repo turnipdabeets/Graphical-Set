@@ -8,15 +8,10 @@
 
 import UIKit
 
-class ViewController: UIViewController, ButtonDelegate {
-    func onButtonTap(card: Card) {
-        print("This button was clicked in the subview!")
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // assigning the delegate DOES NOT WORK!
-        CardView.delegate = self
+class ViewController: UIViewController, CardTableViewDelegate {
+    func delegateCardTap(card: Card){
+        selectCard(card: card)
+        print("IN VIEW CONTROLLER", card)
     }
     // Game
     private var game = SetGame()
@@ -38,6 +33,14 @@ class ViewController: UIViewController, ButtonDelegate {
         dealMoreButton.setTitleColor(#colorLiteral(red: 0.231372549, green: 0.6, blue: 0.9882352941, alpha: 1), for: .normal)
         initalDeal()
         grid.cards = visibleCards
+    }
+//    override func viewDidLoad() {
+//        // assigning the delegate DOES NOT WORK!
+//        cardView.delegate = self
+//    }
+    
+    override func viewDidLoad() {
+        grid.delegate = self
     }
     
     override func viewDidLayoutSubviews() {
@@ -148,19 +151,24 @@ class ViewController: UIViewController, ButtonDelegate {
     private var misMatched = [Card]()
     private var matched = [Card]()
     
-    @IBAction func selectCard(_ sender: UIButton) {
+    func selectCard(card: Card) {
         // must deal more cards if we have a match first
         if !matched.isEmpty && !game.cards.isEmpty { return }
         
         // deal no longer possible
-        if !matched.isEmpty && game.cards.isEmpty { clearAndDeal()}
+        if !matched.isEmpty && game.cards.isEmpty {
+            print("deal no longer possible")
+            clearAndDeal()
+        }
         
         // reset any mismatched card styles
-        if !misMatched.isEmpty { resetMisMatchedStyle() }
+        if !misMatched.isEmpty {
+            print("reset any mismatched card styles")
+            resetMisMatchedStyle()
+        }
         
         // select or deselect card
-        //        if let index = cardButtons.index(of: sender) { toggleCardSelection(by: index)}
-        
+        game.select(card: card)
         // check for match
         checkIfCardsMatch()
     }
@@ -174,36 +182,31 @@ class ViewController: UIViewController, ButtonDelegate {
         }
     }
     
-    private func toggleCardSelection(by index: Int){
-        if visibleCards.indices.contains(index) {
-            //            if cardButtons[index].isEnabled {
-            //                game.select(card: visibleCards[index])
-            //                styleTouched(button: cardButtons[index], by: visibleCards[index])
-            //            }
-        }
-    }
-    
     private func removeStyleFrom(button: UIButton){
         button.layer.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
     }
     
     private func resetMisMatchedStyle(){
         for card in misMatched {
-            if let index = visibleCards.index(of: card){
-                // remove style
-                //                removeStyleFrom(button: cardButtons[index])
-            }
+//            if let index = visibleCards.index(of: card){
+//                // remove style
+//                //                removeStyleFrom(button: cardButtons[index])
+//            }
         }
         misMatched.removeAll()
     }
     
     private func checkIfCardsMatch(){
         if let matchedCards = game.matchedCards() {
+            print("MATCHED!", matchedCards)
             matched = matchedCards
             game.clearSelectedCards()
             score += 3
+            // TODO left off here to handl matched style
+            // reset CardtableView with new cards and all showBoarder false
             styleMatchedCards()
         }else {
+            print("no match")
             if game.selectedCards.count == 3 {
                 misMatched = game.selectedCards
                 game.clearSelectedCards()
@@ -214,21 +217,21 @@ class ViewController: UIViewController, ButtonDelegate {
     }
     
     private func styleMatchedCards(){
-        for card in matched {
-            if let index = visibleCards.index(of: card){
-                //                let button = cardButtons[index]
-                //                button.layer.backgroundColor = #colorLiteral(red: 0.6833661724, green: 0.942397684, blue: 0.7068206713, alpha: 1)
-            }
-        }
+//        for card in matched {
+////            if let index = visibleCards.index(of: card){
+////                //                let button = cardButtons[index]
+////                //                button.layer.backgroundColor = #colorLiteral(red: 0.6833661724, green: 0.942397684, blue: 0.7068206713, alpha: 1)
+////            }
+//        }
     }
     
     private func styleMisMatchedCards(){
-        for card in misMatched {
-            if let index = visibleCards.index(of: card){
-                //                let button = cardButtons[index]
-                //                button.layer.backgroundColor = #colorLiteral(red: 1, green: 0.8087172196, blue: 0.7614216844, alpha: 1)
-            }
-        }
+//        for card in misMatched {
+////            if let index = visibleCards.index(of: card){
+////                //                let button = cardButtons[index]
+////                //                button.layer.backgroundColor = #colorLiteral(red: 1, green: 0.8087172196, blue: 0.7614216844, alpha: 1)
+////            }
+//        }
     }
     
     private func replace(old index: Int, with newCard: Card){
