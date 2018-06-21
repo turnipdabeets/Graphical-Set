@@ -30,12 +30,12 @@ class ViewController: UIViewController {
         initalDeal()
         grid.cards = visibleCards
     }
-
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         // reset frame when device rotates
         grid.frame = CardTable.bounds
-
+        
         // add cards to the card table
         CardTable.addSubview(grid)
     }
@@ -104,16 +104,38 @@ class ViewController: UIViewController {
         matched.removeAll()
     }
     
+    // Gestures
+    @IBAction func tapCard(recognizer:UITapGestureRecognizer) {
+        print("view")
+        if recognizer.state == .ended {
+            let location = recognizer.location(in: CardTable)
+            print("TAP", location)
+            if let cardView = CardTable.viewWithTag(100) {
+                print("cardView ",cardView)
+            }
+//            if let tappedView = CardTable.hitTest(location, with: nil) {
+//                print("tappedView", tappedView)
+//                //                if let tableView = CardTable.viewWithTag(CardView) {
+//                //                    print( tableView)
+//                //                }
+//                if let cardIndex = CardTable.subviews.index(of: tappedView) {
+//                    print(cardIndex)
+//                    //                    setGame.selectCard(at: cardIndex)
+//                    //                    updateView()
+//                }
+//            }
+        }
+    }
+    
     private var allCardsMatched: Bool {
         let cards = visibleCards.filter({card in
-//            if let index = visibleCards.index(of: card){
-////                return cardButtons[index].isEnabled
-//            }
+            //            if let index = visibleCards.index(of: card){
+            ////                return cardButtons[index].isEnabled
+            //            }
             return false
         })
         return cards.count == 3
     }
-    
     private var misMatched = [Card]()
     private var matched = [Card]()
     
@@ -128,7 +150,7 @@ class ViewController: UIViewController {
         if !misMatched.isEmpty { resetMisMatchedStyle() }
         
         // select or deselect card
-//        if let index = cardButtons.index(of: sender) { toggleCardSelection(by: index)}
+        //        if let index = cardButtons.index(of: sender) { toggleCardSelection(by: index)}
         
         // check for match
         checkIfCardsMatch()
@@ -138,17 +160,17 @@ class ViewController: UIViewController {
         for _ in 0..<12 {
             if let card = game.drawCard() {
                 visibleCards.append(card)
-//                style(a: cardButtons[index], by: card)
+                //                style(a: cardButtons[index], by: card)
             }
         }
     }
     
     private func toggleCardSelection(by index: Int){
         if visibleCards.indices.contains(index) {
-//            if cardButtons[index].isEnabled {
-//                game.select(card: visibleCards[index])
-//                styleTouched(button: cardButtons[index], by: visibleCards[index])
-//            }
+            //            if cardButtons[index].isEnabled {
+            //                game.select(card: visibleCards[index])
+            //                styleTouched(button: cardButtons[index], by: visibleCards[index])
+            //            }
         }
     }
     
@@ -160,7 +182,7 @@ class ViewController: UIViewController {
         for card in misMatched {
             if let index = visibleCards.index(of: card){
                 // remove style
-//                removeStyleFrom(button: cardButtons[index])
+                //                removeStyleFrom(button: cardButtons[index])
             }
         }
         misMatched.removeAll()
@@ -185,8 +207,8 @@ class ViewController: UIViewController {
     private func styleMatchedCards(){
         for card in matched {
             if let index = visibleCards.index(of: card){
-//                let button = cardButtons[index]
-//                button.layer.backgroundColor = #colorLiteral(red: 0.6833661724, green: 0.942397684, blue: 0.7068206713, alpha: 1)
+                //                let button = cardButtons[index]
+                //                button.layer.backgroundColor = #colorLiteral(red: 0.6833661724, green: 0.942397684, blue: 0.7068206713, alpha: 1)
             }
         }
     }
@@ -194,22 +216,22 @@ class ViewController: UIViewController {
     private func styleMisMatchedCards(){
         for card in misMatched {
             if let index = visibleCards.index(of: card){
-//                let button = cardButtons[index]
-//                button.layer.backgroundColor = #colorLiteral(red: 1, green: 0.8087172196, blue: 0.7614216844, alpha: 1)
+                //                let button = cardButtons[index]
+                //                button.layer.backgroundColor = #colorLiteral(red: 1, green: 0.8087172196, blue: 0.7614216844, alpha: 1)
             }
         }
     }
     
     private func replace(old index: Int, with newCard: Card){
         visibleCards[index] = newCard
-//        style(a: cardButtons[index], by: newCard)
+        //        style(a: cardButtons[index], by: newCard)
     }
     
     private func hideButton(by index: Int){
-//        let button = cardButtons[index]
-//        button.setAttributedTitle(NSAttributedString(string:""), for: .normal)
-//        button.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0)
-//        button.isEnabled = false
+        //        let button = cardButtons[index]
+        //        button.setAttributedTitle(NSAttributedString(string:""), for: .normal)
+        //        button.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0)
+        //        button.isEnabled = false
     }
     
     private func styleTouched(button: UIButton, by card: Card) {

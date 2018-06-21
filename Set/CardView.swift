@@ -13,7 +13,7 @@ class CardView: UIView {
             setNeedsDisplay()
         }
     }
-    private var symbol: Card.Symbol? {
+    private(set) var symbol: Card.Symbol? {
         didSet{
             setNeedsDisplay()
         }
@@ -28,6 +28,11 @@ class CardView: UIView {
             setNeedsDisplay()
         }
     }
+    var showBorder = false {
+        didSet{
+            setNeedsDisplay()
+        }
+    }
     
     init(frame: CGRect, number: Card.Number, symbol: Card.Symbol, shading: Card.Shading, color: Card.Color) {
         super.init(frame: frame)
@@ -35,7 +40,20 @@ class CardView: UIView {
         self.symbol = symbol
         self.shading = shading
         self.color = color
+        self.tag = 100
         backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
+//        let tap = UITapGestureRecognizer(target: self, action: #selector(tapMe))
+//        self.addGestureRecognizer(tap)
+    }
+    
+//    @objc func tapMe(){
+//        toggleBorderColor()
+//
+//        print("tap")
+//    }
+    
+    private func toggleBorderColor(){
+        showBorder = !showBorder
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -51,8 +69,8 @@ class CardView: UIView {
         super.layoutSubviews()
         // draw any number of card objects on card
         if let number = number, let symbol = symbol, let shading = shading, let color = color, let objectFrame = objectFrame {
-            for frame in 0..<number.rawValue {
-                let object = CardObject(frame: objectFrame[frame], symbol: symbol, shading: shading, color: color)
+            for num in 0..<number.rawValue {
+                let object = CardObject(frame: objectFrame[num], symbol: symbol, shading: shading, color: color)
                 addSubview(object)
             }
         }
@@ -61,8 +79,12 @@ class CardView: UIView {
     private func drawCardCanvas(){
         let roundedRect = UIBezierPath(roundedRect: bounds, cornerRadius: cornerRadius)
         #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0).setFill()
-        #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1).setStroke()
-        
+        if (showBorder){
+            roundedRect.lineWidth = 3
+            #colorLiteral(red: 0.9529411793, green: 0.6862745285, blue: 0.1333333403, alpha: 1).setStroke()
+        }else {
+            #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1).setStroke()
+        }
         roundedRect.fill()
         roundedRect.stroke()
     }
