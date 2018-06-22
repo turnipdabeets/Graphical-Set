@@ -15,7 +15,7 @@ class ViewController: UIViewController, CardTableViewDelegate {
     
     @IBOutlet var mainView: UIView! {
         didSet {
-            let swipe = UISwipeGestureRecognizer(target: self, action: #selector(handleDealGesture))
+            let swipe = UISwipeGestureRecognizer(target: self, action: #selector(deal))
             swipe.direction = [.down, .up]
             mainView.addGestureRecognizer(swipe)
         }
@@ -36,10 +36,16 @@ class ViewController: UIViewController, CardTableViewDelegate {
         visibleCards.removeAll()
         matched.removeAll()
         misMatched.removeAll()
-        dealMoreButton.isEnabled = true
-        dealMoreButton.setTitleColor(#colorLiteral(red: 0.231372549, green: 0.6, blue: 0.9882352941, alpha: 1), for: .normal)
         initalDeal()
         grid.cards = visibleCards
+    }
+    
+    private func initalDeal(){
+        for _ in 0..<12 {
+            if let card = game.drawCard() {
+                visibleCards.append(card)
+            }
+        }
     }
     
     override func viewDidLoad() {
@@ -65,16 +71,7 @@ class ViewController: UIViewController, CardTableViewDelegate {
     }
     
     // Deal
-    @IBOutlet weak var dealMoreButton: UIButton!
     @IBAction func deal(_ sender: UIButton) {
-        handleDeal()
-        // disable if we run out of cards
-        if game.cards.isEmpty {
-            disable(button: sender)
-        }
-        resetTable()
-    }
-    @objc private func handleDealGesture(){
         handleDeal()
         if !matched.isEmpty && game.cards.isEmpty {
             removeMatchedCards()
@@ -108,10 +105,8 @@ class ViewController: UIViewController, CardTableViewDelegate {
             }
         }
     }
-    private func disable(button sender: UIButton){
-        sender.isEnabled = false
-        sender.setTitleColor(#colorLiteral(red: 0.5, green: 0.5, blue: 0.5, alpha: 1), for: .normal)
-    }
+    
+    // Select Card
     
     private var misMatched = [Card]()
     private var matched = [Card]()
@@ -186,14 +181,6 @@ class ViewController: UIViewController, CardTableViewDelegate {
                         visibleCards[idx].state = .selected
                     }
                 }
-            }
-        }
-    }
-    
-    private func initalDeal(){
-        for _ in 0..<12 {
-            if let card = game.drawCard() {
-                visibleCards.append(card)
             }
         }
     }

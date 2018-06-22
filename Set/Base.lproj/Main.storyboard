@@ -64,7 +64,6 @@
                     </view>
                     <connections>
                         <outlet property="CardTable" destination="lkS-tY-Z4l" id="MjZ-gA-aEr"/>
-                        <outlet property="dealMoreButton" destination="MkZ-A5-bz6" id="za2-go-3fS"/>
                         <outlet property="mainView" destination="8bC-Xf-vdC" id="g28-L6-guB"/>
                         <outlet property="scoreLabel" destination="PNq-7T-GWq" id="yWW-7l-SRA"/>
                     </connections>
