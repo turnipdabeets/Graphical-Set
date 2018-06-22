@@ -15,7 +15,6 @@ protocol CardTableViewDelegate: class {
 class CardTableView: UIView, CardViewDelegate {
     weak var delegate: CardTableViewDelegate?
     func onButtonTap(card: Card) {
-        print("This button was clicked in the subview!", card)
         delegateCardTap(card: card)
     }
     func delegateCardTap(card: Card){
@@ -46,7 +45,7 @@ class CardTableView: UIView, CardViewDelegate {
     //    }
     
     override func layoutSubviews() {
-        print(cards)
+//        print(cards)
         super.layoutSubviews()
         // remove any cards before drawing them incase of screen rotation
         for cardView in self.subviews {
@@ -68,7 +67,7 @@ class CardTableView: UIView, CardViewDelegate {
         var y = bounds.minY
         
         for card in cards {
-            let playingCard = CardView(frame: CGRect(x: x, y: y, width: dimensions.width, height: dimensions.height), number: card.number, symbol: card.symbol, shading: card.shading, color: card.color)
+            let playingCard = CardView(frame: CGRect(x: x, y: y, width: dimensions.width, height: dimensions.height), card: card)
             addSubview(playingCard)
             playingCard.delegate = self
             x += cardWidth

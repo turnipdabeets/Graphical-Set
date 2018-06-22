@@ -15,10 +15,10 @@ struct SetGame
     private(set) var selectedCards = [Card]()
     
     init(){
-        makeDeck()
-//        for _ in 0..<21 {
-//            cards.append(Card(number: Card.Number.one, symbol: Card.Symbol.diamond, shading: Card.Shading.open, color:Card.Color.purple))
-//        }
+        //        makeDeck()
+        for _ in 0..<21 {
+            cards.append(Card(number: Card.Number.one, symbol: Card.Symbol.diamond, shading: Card.Shading.open, color:Card.Color.purple, state: nil))
+        }
     }
     
     mutating private func makeDeck(){
@@ -26,7 +26,7 @@ struct SetGame
             for symbol in Card.Symbol.all {
                 for shading in Card.Shading.all {
                     for color in Card.Color.all {
-                        let card = Card(number: number, symbol: symbol, shading: shading, color: color)
+                        let card = Card(number: number, symbol: symbol, shading: shading, color: color, state: nil)
                         cards.append(card)
                     }
                 }

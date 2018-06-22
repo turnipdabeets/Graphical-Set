@@ -12,14 +12,15 @@ import Foundation
 
 struct Card: Hashable, CustomStringConvertible
 {
-    var description : String { return "\(number) \(shading) & \(color) \(symbol) card" }
+    var description : String { return "|\(number) \(shading) & \(color) \(symbol) \(String(describing: state)) card |" }
     
     var number: Number
     var symbol: Symbol
     var shading: Shading
     var color: Color
+    var state: State?
     
-    @objc enum Number : Int, CustomStringConvertible {
+    enum Number : Int, CustomStringConvertible {
         var description: String {
             var title = ""
             switch self {
@@ -42,7 +43,7 @@ struct Card: Hashable, CustomStringConvertible
         }
     }
     
-    @objc enum Symbol: Int, CustomStringConvertible {
+    enum Symbol: Int, CustomStringConvertible {
         var description: String {
             var title = ""
             switch self {
@@ -65,7 +66,7 @@ struct Card: Hashable, CustomStringConvertible
         }
     }
     
-    @objc enum Shading: Int, CustomStringConvertible {
+    enum Shading: Int, CustomStringConvertible {
         var description: String {
             var title = ""
             switch self {
@@ -88,7 +89,7 @@ struct Card: Hashable, CustomStringConvertible
         }
     }
     
-    @objc enum Color: Int, CustomStringConvertible {
+    enum Color: Int, CustomStringConvertible {
         var description: String {
             var title = ""
             switch self {
@@ -111,6 +112,28 @@ struct Card: Hashable, CustomStringConvertible
         }
     }
     
+    enum State: Int, CustomStringConvertible {
+        var description: String {
+            var title = ""
+            switch self {
+            case .selected:
+                title = "selected"
+            case .matched:
+                title = "matched"
+            case .misMatched:
+                title = "misMatched"
+            }
+            return title
+        }
+        case selected
+        case matched
+        case misMatched
+        
+        static var all: [State] {
+            return [.selected, .matched, .misMatched]
+        }
+    }
+    
     var hashValue: Int { return identifier  }
     private(set) var identifier: Int
     private static var identifierFactory = 0
@@ -125,11 +148,12 @@ struct Card: Hashable, CustomStringConvertible
         return lhs.identifier == rhs.identifier
     }
     
-    init(number: Number, symbol: Symbol, shading: Shading, color: Color) {
+    init(number: Number, symbol: Symbol, shading: Shading, color: Color, state: State?) {
         self.identifier = Card.generateUUID()
         self.number = number
         self.symbol = symbol
         self.shading = shading
         self.color = color
+        self.state = state
     }
 }

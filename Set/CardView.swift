@@ -37,38 +37,30 @@ class CardView: UIView {
             setNeedsDisplay()
         }
     }
-    var showBorder = false {
+    private var state: Card.State? {
         didSet{
             setNeedsDisplay()
         }
     }
     
-    init(frame: CGRect, number: Card.Number, symbol: Card.Symbol, shading: Card.Shading, color: Card.Color, showBorder: Bool = false) {
+    init(frame: CGRect, card: Card) {
+        print(card)
         super.init(frame: frame)
-        self.number = number
-        self.symbol = symbol
-        self.shading = shading
-        self.color = color
-        self.card = Card(number: number, symbol: symbol, shading: shading, color: color)
-        self.showBorder = showBorder
+        self.card = card
+        self.number = card.number
+        self.symbol = card.symbol
+        self.shading = card.shading
+        self.color = card.color
+        self.state = card.state
         backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
-        let tap = UITapGestureRecognizer(target: self, action: #selector(tapMe))
+        let tap = UITapGestureRecognizer(target: self, action: #selector(onButtonTap))
         self.addGestureRecognizer(tap)
     }
     
-    @objc func tapMe(){
-        toggleBorderColor()
-        onButtonTap()
-    }
-    
-    func onButtonTap(){
+    @objc func onButtonTap(){
         if let card = card {
             delegate?.onButtonTap(card: card)
         }
-    }
-    
-    private func toggleBorderColor(){
-        showBorder = !showBorder
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -94,11 +86,19 @@ class CardView: UIView {
     private func drawCardCanvas(){
         let roundedRect = UIBezierPath(roundedRect: bounds, cornerRadius: cornerRadius)
         #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0).setFill()
-        if (showBorder){
-            roundedRect.lineWidth = 3
-            #colorLiteral(red: 0.9529411793, green: 0.6862745285, blue: 0.1333333403, alpha: 1).setStroke()
-        }else {
-            #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1).setStroke()
+        #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1).setStroke()
+        if let state = state {
+            switch state {
+            case .matched:
+                roundedRect.lineWidth = 3
+                #colorLiteral(red: 0.2745098174, green: 0.4862745106, blue: 0.1411764771, alpha: 1).setStroke()
+            case .misMatched:
+                roundedRect.lineWidth = 3
+                #colorLiteral(red: 0.521568656, green: 0.1098039225, blue: 0.05098039284, alpha: 1).setStroke()
+            case .selected:
+                roundedRect.lineWidth = 3
+                #colorLiteral(red: 0.9529411793, green: 0.6862745285, blue: 0.1333333403, alpha: 1).setStroke()
+            }
         }
         roundedRect.fill()
         roundedRect.stroke()

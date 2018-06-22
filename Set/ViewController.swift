@@ -10,8 +10,8 @@ import UIKit
 
 class ViewController: UIViewController, CardTableViewDelegate {
     func delegateCardTap(card: Card){
+        print("called in view controller")
         selectCard(card: card)
-        print("IN VIEW CONTROLLER", card)
     }
     // Game
     private var game = SetGame()
@@ -34,16 +34,13 @@ class ViewController: UIViewController, CardTableViewDelegate {
         initalDeal()
         grid.cards = visibleCards
     }
-//    override func viewDidLoad() {
-//        // assigning the delegate DOES NOT WORK!
-//        cardView.delegate = self
-//    }
     
     override func viewDidLoad() {
         grid.delegate = self
     }
     
     override func viewDidLayoutSubviews() {
+        print("viewDidLayoutSubviews")
         super.viewDidLayoutSubviews()
         // reset frame when device rotates
         grid.frame = CardTable.bounds
@@ -55,11 +52,7 @@ class ViewController: UIViewController, CardTableViewDelegate {
     private var visibleCards = [Card]()
     
     // Score
-    @IBOutlet weak var scoreLabel: UILabel! {
-        didSet {
-            scoreLabel.text = "Score: \(score)"
-        }
-    }
+    @IBOutlet weak var scoreLabel: UILabel!
     private var score = 0 {
         didSet {
             scoreLabel.text = "Score: \(score)"
@@ -99,6 +92,7 @@ class ViewController: UIViewController, CardTableViewDelegate {
         sender.setTitleColor(#colorLiteral(red: 0.5, green: 0.5, blue: 0.5, alpha: 1), for: .normal)
     }
     private func clearAndDeal(){
+        print("in clearAndDeal")
         //TODO: rewrite me
         for card in matched {
             if let index = visibleCards.index(of: card){
@@ -116,29 +110,6 @@ class ViewController: UIViewController, CardTableViewDelegate {
         matched.removeAll()
     }
     
-    // Gestures
-//    @IBAction func tapCard(recognizer:UITapGestureRecognizer) {
-//        print("view")
-//        if recognizer.state == .ended {
-//            let location = recognizer.location(in: CardTable)
-//            print("TAP", location)
-//            if let cardView = CardTable.viewWithTag(100) {
-//                print("cardView ",cardView)
-//            }
-////            if let tappedView = CardTable.hitTest(location, with: nil) {
-////                print("tappedView", tappedView)
-////                //                if let tableView = CardTable.viewWithTag(CardView) {
-////                //                    print( tableView)
-////                //                }
-////                if let cardIndex = CardTable.subviews.index(of: tappedView) {
-////                    print(cardIndex)
-////                    //                    setGame.selectCard(at: cardIndex)
-////                    //                    updateView()
-////                }
-////            }
-//        }
-//    }
-    
     private var allCardsMatched: Bool {
         let cards = visibleCards.filter({card in
             //            if let index = visibleCards.index(of: card){
@@ -153,7 +124,11 @@ class ViewController: UIViewController, CardTableViewDelegate {
     
     func selectCard(card: Card) {
         // must deal more cards if we have a match first
-        if !matched.isEmpty && !game.cards.isEmpty { return }
+        if !matched.isEmpty && !game.cards.isEmpty {
+            print("must deal more cards if we have a match first")
+            resetTable()
+            return
+        }
         
         // deal no longer possible
         if !matched.isEmpty && game.cards.isEmpty {
@@ -169,15 +144,54 @@ class ViewController: UIViewController, CardTableViewDelegate {
         
         // select or deselect card
         game.select(card: card)
+        
         // check for match
-        checkIfCardsMatch()
+        evaulate(card: card)
+        // resetTable
+        resetTable()
+    }
+    
+    private func resetTable(){
+        grid = CardTableView(frame: CardTable.bounds, cardsInPlay: visibleCards)
+        grid.delegate = self
+        CardTable.addSubview(grid)
+    }
+    
+    private func evaulate(card: Card){
+        if let matchedCards = game.matchedCards() {
+            print("MATCHED!", matchedCards)
+            matched = matchedCards
+            game.clearSelectedCards()
+            score += 3
+            // set visible cards to matched
+            for card in matchedCards {
+                if let idx = visibleCards.index(of: card){
+                    visibleCards[idx].state = .matched
+                }
+            }
+        }else {
+            if game.selectedCards.count == 3 {
+                print("no match")
+                misMatched = game.selectedCards
+                game.clearSelectedCards()
+                score -= 5
+                for card in misMatched {
+                    if let idx = visibleCards.index(of: card){
+                        visibleCards[idx].state = .misMatched
+                    }
+                }
+            }else {
+                if let idx = visibleCards.index(of: card){
+                    visibleCards[idx].state = .selected
+                }
+            }
+        }
     }
     
     private func initalDeal(){
         for _ in 0..<12 {
             if let card = game.drawCard() {
                 visibleCards.append(card)
-                //                style(a: cardButtons[index], by: card)
             }
         }
     }
@@ -188,50 +202,11 @@ class ViewController: UIViewController, CardTableViewDelegate {
     
     private func resetMisMatchedStyle(){
         for card in misMatched {
-//            if let index = visibleCards.index(of: card){
-//                // remove style
-//                //                removeStyleFrom(button: cardButtons[index])
-//            }
-        }
-        misMatched.removeAll()
-    }
-    
-    private func checkIfCardsMatch(){
-        if let matchedCards = game.matchedCards() {
-            print("MATCHED!", matchedCards)
-            matched = matchedCards
-            game.clearSelectedCards()
-            score += 3
-            // TODO left off here to handl matched style
-            // reset CardtableView with new cards and all showBoarder false
-            styleMatchedCards()
-        }else {
-            print("no match")
-            if game.selectedCards.count == 3 {
-                misMatched = game.selectedCards
-                game.clearSelectedCards()
-                score -= 5
-                styleMisMatchedCards()
+            if let idx = visibleCards.index(of: card){
+                visibleCards[idx].state = nil
             }
         }
-    }
-    
-    private func styleMatchedCards(){
-//        for card in matched {
-////            if let index = visibleCards.index(of: card){
-////                //                let button = cardButtons[index]
-////                //                button.layer.backgroundColor = #colorLiteral(red: 0.6833661724, green: 0.942397684, blue: 0.7068206713, alpha: 1)
-////            }
-//        }
-    }
-    
-    private func styleMisMatchedCards(){
-//        for card in misMatched {
-////            if let index = visibleCards.index(of: card){
-////                //                let button = cardButtons[index]
-////                //                button.layer.backgroundColor = #colorLiteral(red: 1, green: 0.8087172196, blue: 0.7614216844, alpha: 1)
-////            }
-//        }
+        misMatched.removeAll()
     }
     
     private func replace(old index: Int, with newCard: Card){
@@ -253,42 +228,4 @@ class ViewController: UIViewController, CardTableViewDelegate {
             removeStyleFrom(button: button)
         }
     }
-    
-    private func style(a button: UIButton, by card: Card) {
-        // with color
-        var cardColor: UIColor
-        switch card.color {
-        case .teal:
-            cardColor = #colorLiteral(red: 0, green: 0.5690457821, blue: 0.5746168494, alpha: 1)
-        case .pink:
-            cardColor = #colorLiteral(red: 1, green: 0.1607843137, blue: 0.4078431373, alpha: 1)
-        case .purple:
-            cardColor = #colorLiteral(red: 0.5791940689, green: 0.1280144453, blue: 0.5726861358, alpha: 1)
-        }
-        // with symbol
-        let symbolGroup = ["\u{25B2}", "\u{25AE}", "\u{25CF}"] // triangle, rectangle, circle
-        // with shading
-        var attribute: [NSAttributedStringKey: Any] = [:]
-        if card.shading.rawValue == 0 {
-            // striped
-            attribute[.foregroundColor] = cardColor.withAlphaComponent(0.15)
-        } else if card.shading.rawValue == 1 {
-            // solid
-            attribute[.foregroundColor] = cardColor.withAlphaComponent(1.0)
-        } else {
-            // open
-            attribute[.strokeColor] = cardColor
-            attribute[.strokeWidth] = 5.0
-        }
-        // with number
-        var shape = ""
-        for _ in 0..<card.number.rawValue {
-            shape += symbolGroup[card.symbol.rawValue]
-        }
-        // set attributes
-        let attributedString = NSAttributedString(string: shape, attributes: attribute)
-        button.setAttributedTitle(attributedString, for: .normal)
-        button.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-    }
 }
-
