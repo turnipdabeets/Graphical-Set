@@ -18,11 +18,36 @@ class ViewController: UIViewController, CardTableViewDelegate {
             let swipe = UISwipeGestureRecognizer(target: self, action: #selector(deal))
             swipe.direction = [.down, .up]
             mainView.addGestureRecognizer(swipe)
+            
+            let rotate = UIRotationGestureRecognizer(target: self, action: #selector(shuffleCards))
+            mainView.addGestureRecognizer(rotate)
         }
     }
+    @objc func shuffleCards(_ sender: UIRotationGestureRecognizer){
+        if sender.state == .ended {
+            for _ in 0..<visibleCards.count {
+                visibleCards.sort(by: {_,_ in arc4random() > arc4random()})
+            }
+            resetTable()
+        }
+    }
+    
+    override func viewDidLoad() {
+        grid.delegate = self
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        // reset frame when device rotates
+        grid.frame = CardTable.bounds
+        // add cards to the card table
+        CardTable.addSubview(grid)
+    }
+    
     // Game
     private var game = SetGame()
     private lazy var grid = CardTableView(frame: CardTable.bounds, cardsInPlay: visibleCards)
+    
     // table to place all cards
     @IBOutlet weak var CardTable: UIView! {
         didSet {
@@ -30,6 +55,7 @@ class ViewController: UIViewController, CardTableViewDelegate {
             initalDeal()
         }
     }
+    
     @IBAction func newGame(_ sender: UIButton) {
         score = 0
         game = SetGame()
@@ -48,17 +74,6 @@ class ViewController: UIViewController, CardTableViewDelegate {
         }
     }
     
-    override func viewDidLoad() {
-        grid.delegate = self
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        // reset frame when device rotates
-        grid.frame = CardTable.bounds
-        // add cards to the card table
-        CardTable.addSubview(grid)
-    }
     // Cards
     private var visibleCards = [Card]()
     
@@ -106,8 +121,22 @@ class ViewController: UIViewController, CardTableViewDelegate {
         }
     }
     
-    // Select Card
+    private func removeMatchedCards(){
+        for card in matched {
+            if let index = visibleCards.index(of: card){
+                visibleCards.remove(at: index)
+            }
+        }
+    }
     
+    private func resetTable(){
+        grid.removeFromSuperview()
+        grid = CardTableView(frame: CardTable.bounds, cardsInPlay: visibleCards)
+        grid.delegate = self
+        CardTable.addSubview(grid)
+    }
+    
+    // Select Card
     private var misMatched = [Card]()
     private var matched = [Card]()
     
@@ -134,21 +163,6 @@ class ViewController: UIViewController, CardTableViewDelegate {
         evaulate(card: card)
         // resetTable
         resetTable()
-    }
-    
-    private func removeMatchedCards(){
-        for card in matched {
-            if let index = visibleCards.index(of: card){
-                visibleCards.remove(at: index)
-            }
-        }
-    }
-    
-    private func resetTable(){
-        grid.removeFromSuperview()
-        grid = CardTableView(frame: CardTable.bounds, cardsInPlay: visibleCards)
-        grid.delegate = self
-        CardTable.addSubview(grid)
     }
     
     private func evaulate(card: Card){
@@ -184,7 +198,7 @@ class ViewController: UIViewController, CardTableViewDelegate {
             }
         }
     }
-
+    
     private func resetMisMatchedStyle(){
         for card in misMatched {
             if let idx = visibleCards.index(of: card){
