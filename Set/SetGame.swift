@@ -15,7 +15,7 @@ struct SetGame
     private(set) var selectedCards = [Card]()
     
     init(){
-        //        makeDeck()
+//                makeDeck()
         for _ in 0..<21 {
             cards.append(Card(number: Card.Number.one, symbol: Card.Symbol.diamond, shading: Card.Shading.open, color:Card.Color.purple, state: nil))
         }
