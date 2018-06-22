@@ -10,8 +10,15 @@ import UIKit
 
 class ViewController: UIViewController, CardTableViewDelegate {
     func delegateCardTap(card: Card){
-        print("called in view controller")
         selectCard(card: card)
+    }
+    
+    @IBOutlet var mainView: UIView! {
+        didSet {
+            let swipe = UISwipeGestureRecognizer(target: self, action: #selector(handleDealGesture))
+            swipe.direction = [.down, .up]
+            mainView.addGestureRecognizer(swipe)
+        }
     }
     // Game
     private var game = SetGame()
@@ -40,7 +47,6 @@ class ViewController: UIViewController, CardTableViewDelegate {
     }
     
     override func viewDidLayoutSubviews() {
-        print("viewDidLayoutSubviews")
         super.viewDidLayoutSubviews()
         // reset frame when device rotates
         grid.frame = CardTable.bounds
@@ -61,27 +67,43 @@ class ViewController: UIViewController, CardTableViewDelegate {
     // Deal
     @IBOutlet weak var dealMoreButton: UIButton!
     @IBAction func deal(_ sender: UIButton) {
-        // have a match and cards available to deal
-        if !matched.isEmpty && !game.cards.isEmpty {
-            //TODO: fix this for new UI
-            clearAndDeal()
-        } else {
-            dealThreeMore()
-        }
+        handleDeal()
         // disable if we run out of cards
         if game.cards.isEmpty {
             disable(button: sender)
         }
         resetTable()
     }
-    private func dealThreeMore(){
-        if visibleCards.count < game.cardTotal {
-            for _ in 0..<3 {
-                if let card = game.drawCard() {
-                    // add more visible cards
-                    visibleCards.append(card)
-                } else {
-                    print("ran out of cards in the deck!")
+    @objc private func handleDealGesture(){
+        handleDeal()
+        if !matched.isEmpty && game.cards.isEmpty {
+            removeMatchedCards()
+        }
+        resetTable()
+    }
+    private func handleDeal(){
+        // have a match and cards available to deal
+        if !matched.isEmpty && !game.cards.isEmpty {
+            for card in matched {
+                if let index = visibleCards.index(of: card){
+                    // draw new card
+                    if let newCard = game.drawCard() {
+                        // set old visibleCard index to newCard
+                        visibleCards[index] = newCard
+                    } else {
+                        // ran out of cards in the deck!
+                    }
+                }
+            }
+            matched.removeAll()
+        } else {
+            // deal three more
+            if visibleCards.count < game.cardTotal {
+                for _ in 0..<3 {
+                    if let card = game.drawCard() {
+                        // add more visible cards
+                        visibleCards.append(card)
+                    }
                 }
             }
         }
@@ -90,20 +112,6 @@ class ViewController: UIViewController, CardTableViewDelegate {
         sender.isEnabled = false
         sender.setTitleColor(#colorLiteral(red: 0.5, green: 0.5, blue: 0.5, alpha: 1), for: .normal)
     }
-    private func clearAndDeal(){
-        for card in matched {
-            if let index = visibleCards.index(of: card){
-                // draw new card
-                if let newCard = game.drawCard() {
-                    // set old visibleCard index to newCard
-                    visibleCards[index] = newCard
-                } else {
-                    // ran out of cards in the deck!
-                }
-            }
-        }
-        matched.removeAll()
-    }
     
     private var misMatched = [Card]()
     private var matched = [Card]()
@@ -111,17 +119,12 @@ class ViewController: UIViewController, CardTableViewDelegate {
     func selectCard(card: Card) {
         // must deal more cards if we have a match first
         if !matched.isEmpty && !game.cards.isEmpty {
-            print("must deal more cards if we have a match first")
             return
         }
         
         // deal no longer possible
         if !matched.isEmpty && game.cards.isEmpty {
-            for card in matched {
-                if let index = visibleCards.index(of: card){
-                    visibleCards.remove(at: index)
-                }
-            }
+            removeMatchedCards()
         }
         
         // reset any mismatched card styles
@@ -138,6 +141,14 @@ class ViewController: UIViewController, CardTableViewDelegate {
         resetTable()
     }
     
+    private func removeMatchedCards(){
+        for card in matched {
+            if let index = visibleCards.index(of: card){
+                visibleCards.remove(at: index)
+            }
+        }
+    }
+    
     private func resetTable(){
         grid.removeFromSuperview()
         grid = CardTableView(frame: CardTable.bounds, cardsInPlay: visibleCards)
@@ -147,7 +158,6 @@ class ViewController: UIViewController, CardTableViewDelegate {
     
     private func evaulate(card: Card){
         if let matchedCards = game.matchedCards() {
-            print("MATCHED!", matchedCards)
             matched = matchedCards
             game.clearSelectedCards()
             score += 3
@@ -159,7 +169,6 @@ class ViewController: UIViewController, CardTableViewDelegate {
             }
         }else {
             if game.selectedCards.count == 3 {
-                print("no match")
                 misMatched = game.selectedCards
                 game.clearSelectedCards()
                 score -= 5
@@ -188,11 +197,7 @@ class ViewController: UIViewController, CardTableViewDelegate {
             }
         }
     }
-    
-    private func removeStyleFrom(button: UIButton){
-        button.layer.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-    }
-    
+
     private func resetMisMatchedStyle(){
         for card in misMatched {
             if let idx = visibleCards.index(of: card){
@@ -200,13 +205,5 @@ class ViewController: UIViewController, CardTableViewDelegate {
             }
         }
         misMatched.removeAll()
-    }
-    
-    private func styleTouched(button: UIButton, by card: Card) {
-        if game.selectedCards.contains(card) {
-            button.layer.backgroundColor = #colorLiteral(red: 0.9848672538, green: 0.75109528, blue: 1, alpha: 1)
-        }else {
-            removeStyleFrom(button: button)
-        }
     }
 }

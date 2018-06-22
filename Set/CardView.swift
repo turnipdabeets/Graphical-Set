@@ -44,7 +44,6 @@ class CardView: UIView {
     }
     
     init(frame: CGRect, card: Card) {
-        print(card)
         super.init(frame: frame)
         self.card = card
         self.number = card.number

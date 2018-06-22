@@ -45,10 +45,8 @@ class CardTableView: UIView, CardViewDelegate {
     //    }
     
     override func layoutSubviews() {
-//        print(cards)
         super.layoutSubviews()
         // remove any cards before drawing them incase of screen rotation
-        print("remove any cards before drawing")
         for cardView in self.subviews {
             cardView.removeFromSuperview()
         }
