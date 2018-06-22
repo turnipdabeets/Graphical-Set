@@ -25,23 +25,25 @@
                                 <gestureRecognizers/>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="mPt-t8-By8">
-                                <rect key="frame" x="16" y="28.5" width="343" height="30"/>
+                                <rect key="frame" x="16" y="24.5" width="343" height="34"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PNq-7T-GWq">
-                                        <rect key="frame" x="0.0" y="0.0" width="109" height="30"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Score: 0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PNq-7T-GWq">
+                                        <rect key="frame" x="0.0" y="0.0" width="109" height="34"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MkZ-A5-bz6">
-                                        <rect key="frame" x="117" y="0.0" width="109" height="30"/>
+                                        <rect key="frame" x="117" y="0.0" width="109" height="34"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                         <state key="normal" title="Deal"/>
                                         <connections>
                                             <action selector="deal:" destination="BYZ-38-t0r" eventType="touchUpInside" id="M6q-lB-uMh"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iaV-VC-fg1">
-                                        <rect key="frame" x="234" y="0.0" width="109" height="30"/>
+                                        <rect key="frame" x="234" y="0.0" width="109" height="34"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                         <state key="normal" title="New Game"/>
                                         <connections>
                                             <action selector="newGame:" destination="BYZ-38-t0r" eventType="touchUpInside" id="UjM-SU-dPv"/>
