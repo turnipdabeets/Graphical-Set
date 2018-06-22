@@ -89,7 +89,7 @@ class ViewController: UIViewController, CardTableViewDelegate {
     @IBAction func deal(_ sender: UIButton) {
         handleDeal()
         if !matched.isEmpty && game.cards.isEmpty {
-            removeMatchedCards()
+            removeMatchedCardsFromDeck()
         }
         resetTable()
     }
@@ -118,15 +118,36 @@ class ViewController: UIViewController, CardTableViewDelegate {
                     }
                 }
             }
+            // reset any matched or mismatched cards
+            resetMisMatchedStyle()
+            resetMatchedStyle()
         }
     }
     
-    private func removeMatchedCards(){
+    private func removeMatchedCardsFromDeck(){
         for card in matched {
             if let index = visibleCards.index(of: card){
                 visibleCards.remove(at: index)
             }
         }
+    }
+    
+    private func resetMatchedStyle(){
+        for card in matched {
+            if let idx = visibleCards.index(of: card){
+                visibleCards[idx].state = nil
+            }
+        }
+        matched.removeAll()
+    }
+    
+    private func resetMisMatchedStyle(){
+        for card in misMatched {
+            if let idx = visibleCards.index(of: card){
+                visibleCards[idx].state = nil
+            }
+        }
+        misMatched.removeAll()
     }
     
     private func resetTable(){
@@ -148,7 +169,7 @@ class ViewController: UIViewController, CardTableViewDelegate {
         
         // deal no longer possible
         if !matched.isEmpty && game.cards.isEmpty {
-            removeMatchedCards()
+            removeMatchedCardsFromDeck()
         }
         
         // reset any mismatched card styles
@@ -197,14 +218,5 @@ class ViewController: UIViewController, CardTableViewDelegate {
                 }
             }
         }
-    }
-    
-    private func resetMisMatchedStyle(){
-        for card in misMatched {
-            if let idx = visibleCards.index(of: card){
-                visibleCards[idx].state = nil
-            }
-        }
-        misMatched.removeAll()
     }
 }
